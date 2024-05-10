@@ -1,0 +1,38 @@
+import pandas as pd
+data = pd.read_csv('/content/Heart.csv')
+data
+from sklearn.preprocessing import LabelEncoder
+encoder = LabelEncoder()
+data['ChestPain'] = encoder.fit_transform(data['ChestPain'])
+
+data
+data['Thal'] = encoder.fit_transform(data['Thal'])
+data
+data['AHD'] = encoder.fit_transform(data['AHD'])
+data
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+data.isnull().sum()
+data['Ca'].fillna(data['Ca'].mean(),inplace=True)
+data.isnull().sum()
+X = data.drop(columns=['AHD'])
+y = data['AHD']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+dt_classifier = DecisionTreeClassifier()
+svm_classifier = SVC()
+knn_classifier = KNeighborsClassifier()
+dt_classifier.fit(X_train, y_train)
+svm_classifier.fit(X_train, y_train)
+knn_classifier.fit(X_train, y_train)
+dt_predictions = dt_classifier.predict(X_test)
+svm_predictions = svm_classifier.predict(X_test)
+knn_predictions = knn_classifier.predict(X_test)
+dt_accuracy = accuracy_score(y_test, dt_predictions)
+svm_accuracy = accuracy_score(y_test, svm_predictions)
+knn_accuracy = accuracy_score(y_test, knn_predictions)
+print("Decision Tree Accuracy:", dt_accuracy)
+print("SVM Accuracy:", svm_accuracy)
+print("KNN Accuracy:", knn_accuracy)
