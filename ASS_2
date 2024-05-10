@@ -1,0 +1,68 @@
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load dataset
+data = pd.read_csv("/content/Heart.csv")
+
+# a) Find standard deviation, variance of every numerical attribute
+numerical_attributes = data.select_dtypes(include=[np.number])
+std_deviation = numerical_attributes.std()
+variance = numerical_attributes.var()
+print("Standard Deviation of Each Numerical Attribute:")
+print(std_deviation)
+print("\nVariance of Each Numerical Attribute:")
+print(variance)
+
+# b) Find covariance and perform Correlation analysis using Correlation coefficient
+covariance_matrix = numerical_attributes.cov()
+correlation_matrix = numerical_attributes.corr()
+print("\nCovariance Matrix:")
+print(covariance_matrix)
+print("\nCorrelation Matrix:")
+print(correlation_matrix)
+
+# c) How many independent features are present in the given dataset?
+# Independent features can be identified by examining the correlation matrix and considering features with low correlation coefficients (<0.5 or <0.7 depending on the context).
+# For simplicity, we'll count features with correlation coefficient below 0.5.
+independent_features = correlation_matrix[abs(correlation_matrix) < 0.5].count() - 1  # excluding the target variable
+print("\nNumber of Independent Features:", independent_features.sum())
+
+# d) Can we identify unwanted features?
+# Unwanted features can be identified by examining their correlation with the target variable or through domain knowledge.
+# For simplicity, we'll identify features with low correlation with the target variable.
+#target_correlation = abs(correlation_matrix['target']).sort_values()
+#unwanted_features = target_correlation[target_correlation < 0.1].index.tolist()
+#print("\nUnwanted Features:", unwanted_features)
+
+# e) Perform the data discretization using equi frequency binning method on age attribute
+data['age_discretized'] = pd.qcut(data['Age'], q=5, labels=False)
+
+# f) Normalize RestBP, chol, and MaxHR attributes using min-max normalization, Z-score normalization, and decimal scaling normalization
+attributes_to_normalize = ['RestBP', 'Chol', 'MaxHR']
+min_max_scaler = MinMaxScaler()
+z_score_scaler = StandardScaler()
+
+# Min-max normalization
+data_min_max_normalized = data.copy()
+data_min_max_normalized[attributes_to_normalize] = min_max_scaler.fit_transform(data_min_max_normalized[attributes_to_normalize])
+
+# Z-score normalization
+data_z_score_normalized = data.copy()
+data_z_score_normalized[attributes_to_normalize] = z_score_scaler.fit_transform(data_z_score_normalized[attributes_to_normalize])
+
+# Decimal scaling normalization (scaling by maximum absolute value)
+data_decimal_normalized = data.copy()
+for attribute in attributes_to_normalize:
+    max_abs_value = data_decimal_normalized[attribute].abs().max()
+    data_decimal_normalized[attribute] = data_decimal_normalized[attribute] / (10 ** len(str(int(max_abs_value))))
+
+# Displaying the normalized data
+print("\nMin-Max Normalized Data:")
+print(data_min_max_normalized.head())
+print("\nZ-Score Normalized Data:")
+print(data_z_score_normalized.head())
+print("\nDecimal Scaling Normalized Data:")
+print(data_decimal_normalized.head())
