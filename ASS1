@@ -1,0 +1,56 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load dataset
+data = pd.read_csv('/content/Heart.csv')
+
+# a) Find Missing Values and replace them with suitable alternative
+missing_values = data.isnull().sum()
+print("Missing Values:")
+print(missing_values)
+
+# No missing values in this dataset, but if there were, you could replace them using fillna() or imputation techniques.
+
+# b) Remove inconsistency (if any) in the dataset
+# Inconsistencies might include duplicates, incorrect data types, or outliers.
+
+# Remove duplicates
+data.drop_duplicates(inplace=True)
+
+# c) Prepare boxplot analysis for each numerical attribute
+numerical_attributes = data.select_dtypes(include=[np.number]).columns.tolist()
+for col in numerical_attributes:
+    plt.figure(figsize=(6, 4))
+    sns.boxplot(x=data[col])
+    plt.title(col + " Boxplot")
+    plt.show()
+
+# d) Draw histogram for any two suitable attributes
+plt.figure(figsize=(10, 5))
+plt.subplot(1, 2, 1)
+sns.histplot(data['Age'], bins=10, kde=True)
+plt.title('Age Histogram')
+plt.subplot(1, 2, 2)
+sns.histplot(data['Chol'], bins=10, kde=True)
+plt.title('Cholesterol Histogram')
+plt.tight_layout()
+plt.show()
+
+# e) Find data type of each column
+print("Data Types of Each Column:")
+print(data.dtypes)
+
+# f) Finding out Zero's
+zeros_count = (data == 0).sum()
+print("Number of Zeros in Each Column:")
+print(zeros_count)
+
+# g) Find Mean age of patients
+mean_age = data['Age'].mean()
+print("Mean Age of Patients:", mean_age)
+
+# h) Find shape of data
+data_shape = data.shape
+print("Shape of Data:", data_shape)
