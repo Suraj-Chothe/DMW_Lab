@@ -5,6 +5,7 @@ from sklearn.preprocessing import LabelEncoder
 encoder = LabelEncoder()
 data['ChestPain'] = encoder.fit_transform(data['ChestPain'])
 
+
 data
 data['Thal'] = encoder.fit_transform(data['Thal'])
 data
