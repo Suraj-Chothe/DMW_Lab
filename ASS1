@@ -13,6 +13,7 @@ print(missing_values)
 
 # No missing values in this dataset, but if there were, you could replace them using fillna() or imputation techniques.
 
+
 # b) Remove inconsistency (if any) in the dataset
 # Inconsistencies might include duplicates, incorrect data types, or outliers.
 
