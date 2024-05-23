@@ -13,6 +13,7 @@ data = [['Milk', 'Bread', 'Butter'],
 
 df = pd.DataFrame(data, columns=['Item1', 'Item2', 'Item3', 'Item4'])
 
+
 #Convert the dataset to a transaction format:
 te = TransactionEncoder()
 te_ary = te.fit(data).transform(data)
