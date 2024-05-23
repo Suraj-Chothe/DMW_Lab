@@ -4,6 +4,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
 # Load dataset
 data = pd.read_csv("/content/Heart.csv")
 
