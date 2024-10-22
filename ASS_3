@@ -20,6 +20,7 @@ te_ary = te.fit(data).transform(data)
 df_encoded = pd.DataFrame(te_ary, columns=te.columns_)
 df_encoded
 
+
 #Apply the Apriori algorithm:
 frequent_itemsets_apriori = apriori(df_encoded, min_support=0.33, use_colnames=True)
 frequent_itemsets_apriori#Apply the FP-growth algorithm:
