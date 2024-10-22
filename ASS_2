@@ -17,6 +17,7 @@ print(std_deviation)
 print("\nVariance of Each Numerical Attribute:")
 print(variance)
 
+
 # b) Find covariance and perform Correlation analysis using Correlation coefficient
 covariance_matrix = numerical_attributes.cov()
 correlation_matrix = numerical_attributes.corr()
